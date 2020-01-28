@@ -2,19 +2,19 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"io/ioutil"
 	"os"
 	"strings"
 )
 
-var (
-	local_dir = "/Users/s07349/Downloads/CA/CATS/dataset/"
-	label     = "non_driver_licence"
-	image_uri = "gs://ocr_testdata/"
-)
-
 func main() {
-	files, err := ioutil.ReadDir(local_dir + label)
+	var (
+		image_dir = flag.String("image_dir", "./", "image_directory including images")
+		label     = flag.String("label", "no_label", "label")
+	)
+	flag.Parse()
+	files, err := ioutil.ReadDir(*image_dir)
 	if err != nil {
 		panic(err)
 	}
@@ -23,7 +23,7 @@ func main() {
 		paths = append(paths, file.Name())
 	}
 
-	csvFile, err := os.OpenFile(local_dir+label+".csv", os.O_WRONLY|os.O_CREATE, 0600)
+	csvFile, err := os.OpenFile(*image_dir+*label+".csv", os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		panic(err)
 	}
@@ -31,14 +31,15 @@ func main() {
 	err = csvFile.Truncate(0)
 	writer := csv.NewWriter(csvFile)
 
-	writer.Write([]string{"image_path", "label"})
+	writer.Write([]string{"image_dir", "image_name", "label"})
 	for _, path := range paths {
 		if strings.Contains(path, ".DS_Store") {
 			continue
 		}
 		line := []string{
-			image_uri + label + "/" + path,
-			label,
+			*image_dir + "/",
+			path,
+			*label,
 		}
 		writer.Write(line)
 	}

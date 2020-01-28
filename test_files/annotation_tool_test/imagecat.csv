@@ -1,0 +1,7 @@
+image_dir,image_name,label
+/Users/s07349/go/src/github.com/skdrums/wire_test/test_files/annotation_tool_test/image/,20171228-OYT8I50004-1.jpg,cat
+/Users/s07349/go/src/github.com/skdrums/wire_test/test_files/annotation_tool_test/image/,k_IMG_7021.jpg,cat
+/Users/s07349/go/src/github.com/skdrums/wire_test/test_files/annotation_tool_test/image/,masumi_190621sleepcat01.jpg,cat
+/Users/s07349/go/src/github.com/skdrums/wire_test/test_files/annotation_tool_test/image/,nakigoe_1-740x429.jpg,dog
+/Users/s07349/go/src/github.com/skdrums/wire_test/test_files/annotation_tool_test/image/,ダウンロード (1).jpeg,dog
+/Users/s07349/go/src/github.com/skdrums/wire_test/test_files/annotation_tool_test/image/,ダウンロード.jpeg,dog
