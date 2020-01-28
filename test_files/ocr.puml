@@ -1,0 +1,50 @@
+@startuml
+actor Client
+participant User
+participant AutoML
+participant VisionAPI
+participant Spanner
+participant CAAD
+participant Simply
+
+Client -> User :　post image
+User -> CAAD : 本人確認依頼
+User -> Simply : 画像ファイルアップロード
+
+
+
+alt default
+User -> AutoML ++ : 評価
+return OK
+User -> VisionAPI ++ : OCR
+return OCR結果
+User -> User : OCR結果の照合
+
+
+
+else 免許証裏表、2枚アップロードの場合、
+User -> AutoML ++ : 表評価
+return OK
+User -> AutoML ++ : 裏評価
+return OK
+User -> VisionAPI ++ : 裏表2枚のOCRリクエスト
+return OK
+User -> User : 裏表OCR結果の照合\n氏名の記述事項を裏の画像優先で認識
+
+end
+
+
+
+alt AutoML or VisionAPIにて否認の場合
+AutoML -> User : 否認
+VisionAPI -> User : don't match text
+User -> Client : 否認
+Client -> User : 再度リクエスト　*以降、再度同じフロー
+end
+
+User -> Spanner : update spanner
+User -> Client : OK
+
+
+
+@enduml

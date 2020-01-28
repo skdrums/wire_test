@@ -1,0 +1,54 @@
+@startuml
+box "pkg/keirin/cmd" #Light
+        participant newScrapingVenue
+        participant run
+end box
+box "pkg/keirin/api #Light
+        participant FetchVenueInfo
+end box
+box "pkg/keirin/scraping" #Light
+        participant Execute
+        participant keirinDailyScraping
+end box
+box "pkg/keirin/scraping/keirinjp #Light
+        participant findVenueInfo
+end box
+box "pkg/keirin/database" #Light
+        participant interface.Venue
+end box
+box "pkg/keirin/database/spanner #Light
+        participant Update
+end box
+database spanner
+
+newScrapingVenue -> newScrapingVenue : struct.App生成
+newScrapingVenue -> run ++ :
+run -> run : logger生成
+run -> run : ctx生成
+run -> run : env確認
+run -> run : Service,server生成
+run -> FetchVenueInfo ++ : server, service
+
+
+FetchVenueInfo -> FetchVenueInfo : GetEnabledVenue
+FetchVenueInfo -> Execute ++
+Execute -> keirinDailyScraping ++
+
+keirinDailyScraping -> findVenueInfo ++ : venueの数だけloop
+
+findVenueInfo -> findVenueInfo : Scraping実装
+
+return
+keirinDailyScraping -> keirinDailyScraping : append venueInfo on []venueInfo
+return []venueInfo, error
+
+return []venueInfo, error
+
+FetchVenueInfo -> interface.Venue ++ : Update\nctx context.Context, req *keirin.UpdateVenueRequest
+Update -> spanner
+Update -> interface.Venue
+
+return keirin.UpdateVenueResponse, error
+return error
+return error
+@enduml
