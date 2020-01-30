@@ -17,6 +17,9 @@ func main() {
 	for _, path := range filePaths {
 		fmt.Println(path)
 	}
+
+	rel := filepath.Base(workDir)
+	fmt.Println(rel)
 }
 
 func ReadAllFiles(dir string) []string {
