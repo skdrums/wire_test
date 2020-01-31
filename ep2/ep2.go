@@ -9,9 +9,9 @@ import (
 )
 
 var (
-	minV = 1.3
-	maxV = 2.0
-	span = 0.05
+	minV = 1.585
+	maxV = 1.65
+	span = 0.005
 )
 
 func main() {
@@ -35,7 +35,7 @@ func main() {
 		}
 		fmt.Println("電力は？")
 		fmt.Scan(&w)
-		v = strconv.FormatFloat(i, 'f', 2, 64)
+		v = strconv.FormatFloat(i, 'f', 3, 64)
 		line := []string{
 			v,
 			a,
